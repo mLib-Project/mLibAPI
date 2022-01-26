@@ -11,5 +11,7 @@ func ServeIndex(c *gin.Context) {
 }
 
 func GetBooks(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", gin.H{})
+	c.JSON(http.StatusOK, gin.H{
+		"message": "pong",
+	})
 }

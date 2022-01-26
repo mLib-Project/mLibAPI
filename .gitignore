@@ -19,5 +19,6 @@ go.sum
 
 static
 env.go
+.env
 
 tmp
