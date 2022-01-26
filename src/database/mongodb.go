@@ -3,13 +3,13 @@ package database
 import (
 	context "context"
 	fmt "fmt"
-	log "log"
 	time "time"
 
 	mongo "go.mongodb.org/mongo-driver/mongo"
 	options "go.mongodb.org/mongo-driver/mongo/options"
 
 	Config "mLibAPI/src/config"
+	Helpers "mLibAPI/src/helpers"
 )
 
 const (
@@ -17,7 +17,9 @@ const (
 	connectionStringTemplate = "mongodb://%s:%s@%s"
 )
 
-func GetConnection() (*mongo.Client, context.Context, context.CancelFunc) {
+func ConnectDB() *mongo.Client {
+	Config.Init()
+
 	username := Config.DB_Username
 	password := Config.DB_Password
 	clusterEndpoint := Config.DB_ClusterEndpoint
@@ -25,28 +27,28 @@ func GetConnection() (*mongo.Client, context.Context, context.CancelFunc) {
 	connectionURI := fmt.Sprintf(connectionStringTemplate, username, password, clusterEndpoint)
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(connectionURI))
-	if err != nil && Config.Mode == "DEV" {
-		log.Printf("Failed to create client: %v", err)
-	}
+	Helpers.PrintError(err)
 
 	ctx, cancel := context.WithTimeout(context.Background(), connectTimeout*time.Second)
+	defer cancel()
 
 	err = client.Connect(ctx)
-	if err != nil && Config.Mode == "DEV" {
-		log.Printf("Failed to connect to cluster: %v", err)
-	}
+	Helpers.PrintError(err)
 
-	// Force a connection to verify our connection string
 	err = client.Ping(ctx, nil)
-	if err != nil && Config.Mode == "DEV" {
-		log.Printf("Failed to ping cluster: %v", err)
-	}
+	Helpers.PrintError(err)
 
 	if Config.Mode == "DEV" {
-		fmt.Println("Connected to MongoDB!")
+		fmt.Println("Connected to MongoDB")
 	}
+	return client
+}
 
-	return client, ctx, cancel
+var DB *mongo.Client = ConnectDB()
+
+func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	collection := client.Database(Config.DB_Collection).Collection(collectionName)
+	return collection
 }
 
 // var Client, _ = mongo.NewClient(options.Client().ApplyURI(Config.DBAdress))

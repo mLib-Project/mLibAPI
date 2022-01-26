@@ -8,7 +8,7 @@ import (
 
 func App() {
 
-	Database.GetConnection()
+	Database.ConnectDB()
 	App := Router.CreateServer()
 
 	App.Run(Config.Port)
