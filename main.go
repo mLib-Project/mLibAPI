@@ -1,9 +1,9 @@
 package main
 
 import (
-	app "mLib/src/core"
+	mLibAPI "mLibAPI/src"
 )
 
 func main() {
-	app.Init()
+	mLibAPI.Init()
 }

@@ -7,5 +7,9 @@ import (
 )
 
 func ServeIndex(c *gin.Context) {
-	c.String(http.StatusOK, "hello world")
+	c.HTML(http.StatusOK, "index.html", gin.H{})
+}
+
+func GetBooks(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", gin.H{})
 }
