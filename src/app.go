@@ -12,7 +12,6 @@ func App() {
 	App := Router.CreateServer()
 
 	App.Run(Config.Port)
-	// defer Database.Client.Disconnect(Database.Ctx)
 }
 
 func Init() {
