@@ -17,8 +17,11 @@ go.sum
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-static
 env.go
 .env
 
-tmp
+tmp/*
+
+public/*
+!public/*.ico
+!tmp/*.txt
