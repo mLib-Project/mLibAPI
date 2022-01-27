@@ -20,7 +20,7 @@ var (
 func Init() {
 	err := dotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf("Error loading .env file: %s", err)
 	}
 
 	Port = os.Getenv("PORT")

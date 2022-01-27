@@ -6,12 +6,15 @@ import (
 	gin "github.com/gin-gonic/gin"
 
 	Controllers "mLibAPI/src/controllers"
+	Database "mLibAPI/src/database"
 )
 
 func CreateServer() *gin.Engine {
 
 	R := gin.Default()
 	R.Use(cors.Default())
+
+	Database.ConnectDB()
 
 	R.LoadHTMLGlob("public/*.html")
 	R.Use(static.Serve("/", static.LocalFile("public/", false)))

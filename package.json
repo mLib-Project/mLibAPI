@@ -4,7 +4,8 @@
   "description": "Api for mLib website",
   "main": "main.go",
   "scripts": {
-    "start": "air"
+    "start": "air",
+    "test": "go test ."
   },
   "repository": {
     "type": "git",
